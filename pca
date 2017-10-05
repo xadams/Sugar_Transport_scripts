@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# This script takes the nmd output from the prody jupyter notebook and writes
+# out usable mode information for them into individual files
+
+# return an error if no arguments are supplied
+if [ -z "$1" ]; then
+    echo "No file given, please provide an nmd file for mode extraction"
+    exit
+fi
+
+for i in {1..3}
+do
+    egrep "mode $i " $1 > tmp$i
+    modes tmp$i > mode$i
+    index mode$i
+    rm tmp$i
+done

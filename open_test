@@ -1,0 +1,30 @@
+#!/usr/bin/env bash 
+
+count=$(cat pdbids.txt | wc -l)
+if [ -f colorids.txt ]; then
+    echo -n "colorids.txt exists, overwrite? (y/n): "
+    read abort
+fi
+if [ $abort=="n" ]; then
+    echo Exiting
+    exit
+fi
+exit
+# since the colorids.txt is appended at every step, make sure to clear it beforehand
+rm colorids.txt
+for i in $(eval echo {1..$((count))} );
+do
+    pdb=$(sed -n $i\p pdbids.txt)
+    txt=$(echo $pdb | cut -f 1 -d '.')
+    if [ -f "$txt.txt" ]; then
+        echo File detected
+    else
+#        echo No file detected, running pdbhole
+        pdbhole $pdb
+    fi
+    python ~/PycharmProjects/Work/pore\ plots/open_test.py $txt.txt >> colorids.txt
+done
+
+sed -i -e 's/Occluded/red/g' colorids.txt
+sed -i -e 's/Open/blue/g' colorids.txt
+

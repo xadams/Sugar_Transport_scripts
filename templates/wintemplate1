@@ -1,0 +1,17 @@
+colvarsTrajFrequency      1000
+colvarsRestartFrequency   1000
+
+colvar {
+   name Translocation
+
+   width 0.1
+
+   lowerboundary
+   upperboundary
+
+   lowerwallconstant 100.0
+   upperwallconstant 100.0
+
+   distanceZ {
+      main {
+         atomnumbers { 

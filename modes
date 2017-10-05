@@ -1,0 +1,19 @@
+#~/usr/bin/env bash
+# This script, when given a file with a single continuous line of modes
+# chops them up into triples (corresponding to x y z) for each particle
+
+# return an error if no arguments are supplied
+if [ -z "$1" ]; then
+   echo "No file given"
+   exit
+fi
+
+# atomnum is actually atoms + 1 for the mode information at the beginning
+atomnum=465
+# need to later add feature that reads in number of particles or requests
+for i in $(eval echo {1..$atomnum});
+do
+   k=$(($i*3-2))
+   j=$(($k+2))
+   cut -f "$k"-"$j" -s -d ' ' $1
+done

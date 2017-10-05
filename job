@@ -5,19 +5,14 @@ echo -n "Enter the output file name: "
 read name
 echo -n "Enter input file name: "
 read input
-if [ -f $input.xsc ]; then
-    first=$(egrep "0 0 0" $input.xsc | cut -f 1 -s -d ' ')
-else
-    echo "Input file $input.xsc not found"
-    exit
-fi
-echo "Starting at step $first"
-echo -n "Enter run time in ns (enter "end" to specify end time): "
+first=$(egrep "0 0 0" $input.xsc | cut -f 1 -s -d ' ')
+#echo -n "Enter first timestep: "
+#read first
+echo -n "Enter run time (in ns): "
 read ns
-if [ $ns = "end" ]; then
+if [ $ns="end" ]; then
     echo -n "Enter the end time (in ns):"
-    read lasttime
-    last=$(($lasttime*500000))
+    read last
     steps=$(($last-$first))
 fi
 
@@ -32,25 +27,20 @@ echo -n "Enter your wall time in whole hours (if known): "
 read walltime
 
 if [ -z "$walltime" ]; then
-     walltime=$(($steps*2/50000))
+     walltime=$(($steps*15/1000000))
 fi 
 
-cat $templatehome/template.pbs > $name.pbs
-echo "#PBS -l walltime=$walltime:00:00" | cat >> $name.pbs
-echo "#PBS -N $name" >> $name.pbs
-cat $templatehome/template2.pbs >> $name.pbs
-echo "namd2 +p 12 $name.inp >& $name.log" | cat >> $name.pbs
+echo "#!/bin/bash" | cat > $name.job
+echo "#SBATCH -t $walltime:00:00" | cat >> $name.job
+cat $templatehome/jobtemplate >> $name.job
+echo "mpirun -np \$SLURM_NPROCS namd2 +setcpuaffinity +pemap 0-27 $name.inp>& $name.log" | cat >> $name.job
+echo "transfer $name" | cat >> $name.job
 
 cat $templatehome/inptemplate1 > $name.inp
 echo "outputname        $name;" | cat >> $name.inp
 echo "set inputname    $input;" | cat >> $name.inp
 echo "firsttimestep   $first;" | cat >> $name.inp
-# if the simulation is over 4 ns, log at the lower rate
-if [ $steps -ge 2000000 ]; then
-    cat $templatehome/inptemplatelong >> $name.inp
-else
-    cat $templatehome/inptemplate2 >> $name.inp
-fi
+cat $templatehome/inptemplate2 >> $name.inp
 echo "# run" | cat >> $name.inp
 total=$(($steps+$first))
 echo "numsteps          $total;" | cat >>$name.inp

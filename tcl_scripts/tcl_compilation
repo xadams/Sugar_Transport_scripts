@@ -1,0 +1,31 @@
+# Here is a nice, searchable collection of all useful tcl scripts (because they're subtly different from bash)
+
+# set the most recently loaded mol as the top, interactable model
+mol top 0
+
+# set variable as a argument supplied from command line
+set dcd [lindex $argv 0]
+
+# load a dcd file starting at step 1000 and reading only every 100th step
+mol addfile $dcd start 1000 end 5000 step 100 waitfor all
+
+# writes out a pdb file for each frame, frames should correspond to proper time intervals by adjusting the stride
+puts "Enter the start time (in ns): "
+set start [gets stdin]
+set n [expr {int([molinfo top get numframes])}]
+for { set i 0 } { $i <= $n } { incr i } {
+    set current [expr {int($i+1)}]
+    animate goto $current
+    set time [expr {$start+$i*5}]
+#    $sel update
+    $sel writepdb ${time}ns.pdb
+}
+
+# move sugar to the COM of protein
+set com_protein [measure center $protein weight mass]
+set com_sugar [measure center $sugar weight mass]
+$sugar moveby [vecinvert com_protein]
+
+# move sugar up 50 Angstroms
+$sugar moveby {0 0 50}
+
