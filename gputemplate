@@ -1,0 +1,11 @@
+#SBATCH -p GPU
+#SBATCH -N 1 --tasks-per-node=28
+#SBATCH --mail-type=ALL
+#SBATCH --gres=gpu:k80:4
+set echo
+set -x
+module load cuda
+# module load namd_gpu
+
+cd $SLURM_SUBMIT_DIR
+nvidia-smi
