@@ -1,0 +1,14 @@
+#!/bin/bash
+JOBONE=$(qsub 6.1.pbs)
+#JOBONE=24035970
+JOBTWO=$(qsub -W depend=afterok:$JOBONE 6.2.pbs)
+# Submit the third job, use JOBONE and JOBTWO as dependencies
+JOBTHREE=$(qsub -W depend=afterok:$JOBTWO 6.3.pbs)
+# Submit the fourth job, use previous 3 jobs as dependencies
+JOBFOUR=$(qsub -W depend=afterok:$JOBTHREE 6.4.pbs)
+# Submit the fifth job, use previous 4 jobs as dependencies                                                             
+JOBFIVE=$(qsub -W depend=afterok:$JOBFOUR 6.5.pbs)
+# Submit the sixth job, use previous 5 jobs as dependencies
+JOBSIX=$(qsub -W depend=afterok:$JOBFIVE 6.6.pbs)
+# Submit the seventh and last job, use previous 6 jobs as dependencies, no need to save JobID                                                                                                                                             
+qsub -W depend=afterok:$JOBSIX 7.1.pbs

@@ -1,0 +1,16 @@
+#!/bin/bash            
+####  PBS preamble
+
+# Job name
+#PBS -N namd_scaling
+
+# mail 
+#PBS -M xadams@umich.edu
+# when to send mail b = begins e = ends a = abort
+#PBS -m bea 
+# join output with error
+#PBS -j oe
+
+# how much of the computer are we using? computers processors, memory and time, ppn = processors per node
+# mem is shared by all processors, pmem is per processor
+

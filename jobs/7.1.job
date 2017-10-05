@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH -p RM-shared
+#SBATCH -N 1 --tasks-per-node=28
+#SBATCH -t 8:00:00
+#SBATCH --mail-type=ALL
+set echo
+set -x
+# Load the needed modules
+#This job is to be submitted to the RM or LM partitions.
+#It corresponds to the highly scalable version of NAMD.
+#If you wish to run on GPUs use the GPU version.
+module load namd
+#
+
+cd $SLURM_SUBMIT_DIR 
+
+mpirun -np $SLURM_NPROCS namd2 +setcpuaffinity +pemap 0-27 step7.1_production.inp>& 7.1.log
+transfer 7.1
+catdcd -o 6.1_7.1.dcd 6.1.dcd 6.2.dcd 6.3.dcd 6.4.dcd 6.5.dcd 6.6.dcd 7.1.dcd
+dir=$(pwd | cut -c 24-60)
+destination=/pylon2/ct560hp/adamsa/$dir
+cp 6.1_7.1.dcd $destination
+

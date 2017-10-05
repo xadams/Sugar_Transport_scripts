@@ -1,0 +1,21 @@
+#!/bin/bash            
+####  PBS preamble
+
+# mail 
+#PBS -M xadams@umich.edu
+# when to send mail b = begins e = ends a = abort
+#PBS -m bea 
+# join output with error
+#PBS -j oe
+
+# how much of the computer are we using? computers processors, memory and time, ppn = processors per node
+# mem is shared by all processors, pmem is per processor
+#PBS -l nodes=1:ppn=12,pmem=1200mb
+# 15 seconds 15:00:00 hours 15:00:00:00 days, 15:00 is minimum amount you should ask for
+#PBS -V
+
+# account name
+#PBS -A hbmayes_fluxod
+# should match suffix 
+#PBS -q fluxod
+

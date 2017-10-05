@@ -1,0 +1,11 @@
+proc get_first_ts { xscfile } {
+   set fd [open $xscfile r]
+   gets $fd
+   gets $fd line
+   set ts [lindex $line 0]
+   close $fd
+   return $ts
+
+set firsttime [get_first_ts $inputname.xsc]
+
+firsttimestep $firsttime

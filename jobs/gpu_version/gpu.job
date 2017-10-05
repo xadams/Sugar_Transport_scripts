@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH -N 1 --tasks-per-node=28 
+#SBATCH -t 00:30:00
+#SBATCH -p GPU
+#SBATCH --gres=gpu:k80:4
+#SBATCH --mail-type=ALL
+
+#
+#EFFICIENT RUNS REQUIRE SINGLE NODE (N=1)
+set echo
+set -x 
+# Load the needed modules
+
+module load namd/namd_gpu
+module load cuda
+
+cd $SLURM_SUBMIT_DIR
+nvidia-smi
+
+$BINDIR/namd2 +idlepoll +p $SLURM_NPROCS +pemap 0-13+14 long.conf >namd_gpu.log

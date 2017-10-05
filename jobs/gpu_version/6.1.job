@@ -1,0 +1,22 @@
+#!/bin/bash
+#SBATCH -p GPU
+#SBATCH -N 1 --tasks-per-node=28
+#SBATCH -t 1:00:00
+#SBATCH --gres=gpu:k80:4
+#SBATCH --mail-type=ALL
+
+#Efficient runs require single node (N=1)
+set echo
+set -x
+# Load the needed modules
+#This job is to be submitted to the RM or LM partitions.
+#It corresponds to the highly scalable version of NAMD.
+#If you wish to run on GPUs use the GPU version.
+module load namd/namd_gpu
+module load cuda
+#
+
+cd $SLURM_SUBMIT_DIR 
+nvidia-smi
+
+$BINDIR/namd2 +idlepoll +p $SLURM_NPROCS +pemap 0-13+14 step6.1_equilibration.inp>& 6.1.log

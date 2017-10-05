@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# import the equilibration job from the jobs folder
+cp ~/bin/jobs/7*pbs .
+cp ~/bin/jobs/6*.pbs .
+cp ~/bin/inpfiles/6* .
+cp ~/bin/inpfiles/7*inp .

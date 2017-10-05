@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH -p RM-shared
+#SBATCH -N 1 --tasks-per-node=28
+#SBATCH -t 1:30:00
+#SBATCH --mail-type=ALL
+set echo
+set -x
+# Load the needed modules
+#This job is to be submitted to the RM or LM partitions.
+#It corresponds to the highly scalable version of NAMD.
+#If you wish to run on GPUs use the GPU version.
+module load namd
+#
+
+cd $SLURM_SUBMIT_DIR 
+
+mpirun -np $SLURM_NPROCS namd2 +setcpuaffinity +pemap 0-27 step6.4_equilibration.inp>& 6.4.log

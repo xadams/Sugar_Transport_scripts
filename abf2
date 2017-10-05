@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# This program should generate a job script from input
+
+pdbs=$(ls *.pdb | wc -l)
+if [ "$pdbs" -ne 1 ]; then
+    echo "Multiple pdb files. Please resolve before continuing"
+    exit
+fi
+pdb=$(ls *.pdb)
+in=$(ls *.in)
+
+echo -n "Enter the output file name: "
+read name
+echo -n "Enter input file name: "
+read input
+if [ -f $input.xsc ]; then
+    first=$(egrep "0 0 0" $input.xsc | cut -f 1 -s -d ' ')
+else
+    echo "Input file $input.xsc not found"
+    exit
+fi
+echo "Starting at step $first"
+echo -n "Enter run time in ns (enter "end" to specify end time): "
+read ns
+if [ $ns = "end" ]; then
+    echo -n "Enter the end time (in ns):"
+    read lasttime
+    last=$(($lasttime*500000))
+    steps=$(($last-$first))
+fi
+
+if [ -z "$ns" ]; then
+    echo -n "Enter run time (in steps):"
+    read steps
+fi 
+if [ -z "$steps" ]; then
+     steps=$(($ns*500000))
+fi 
+echo -n "Enter your wall time in whole hours (if known): "
+read walltime
+
+# estimate walltime at the rate of 20 hours/ns
+if [ -z "$walltime" ]; then
+     walltime=$(($steps*20/500000))
+fi 
+
+cat $templatehome/template.pbs > $name.pbs
+echo "#PBS -l walltime=$walltime:00:00" | cat >> $name.pbs
+echo "#PBS -N $name" >> $name.pbs
+cat $templatehome/template2.pbs >> $name.pbs
+echo "namd2 +p 12 $name.inp >& $name.log" | cat >> $name.pbs
+
+cat $templatehome/abftemplate > $name.inp
+echo "coordinates       $pdb" | cat >> $name.inp
+echo "set outputname        $name;" | cat >> $name.inp
+echo "set temperature     303.15" | cat >> $name.inp
+echo "set input    $input;" | cat >> $name.inp
+echo "firsttimestep   $first;" | cat >> $name.inp
+echo "binCoordinates   $input.coor" | cat >> $name.inp
+echo "#binVelocities    $input.vel" | cat >> $name.inp
+echo "extendedSystem    $input.xsc" | cat >> $name.inp
+cat $templatehome/abftemplate2 >> $name.inp
+echo "colvarsConfig     $in" | cat >> $name.inp
+echo "colvarsInput  $input.colvars.state" | cat >> $name.inp
+cat $templatehome/abftemplate3 >> $name.inp
+
+total=$(($steps+$first))
+echo "numsteps          $total;" | cat >>$name.inp
+echo "run               $steps;" | cat >> $name.inp
+
+echo "Setting walltime as $walltime hours"
