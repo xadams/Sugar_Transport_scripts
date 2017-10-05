@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# This is the starting executable for generation of abf scripts
+
+# help text
+if [[ $1 = "help" ]]; then
+    echo This script is used for generating all inputs for an ABF simulation seeded from an SMD simulation. A psf should be provided for indices of the sugar and protein alpha carbons.
+    exit
+fi
+
+# if no arguments received, query if the default should be used
+if [ -z "$1" ]; then
+    echo -n "No argument given, should the default psf be used (y|n)? "
+    read answer
+    if [ $answer = "y" ]; then
+        psf="../step5_assembly.xplor_ext.psf"
+    else
+        exit
+    fi
+else
+    psf=$1
+fi
+
+# check if the win.in file exists 
+if [ -f $psf ]
+then
+    echo "$psf exists"
+else
+    echo "Hey buddy, $psf doesn't exist"
+    exit
+fi
+
+# load VMD with the provided psf and write out the appropriate indices as "abf_indices"
+#/Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e $tclhome/abf_indices.tcl -dispdev text $psf
+
+# generate the generic win.in file to which limits for each window will be added
+cat $templatehome/wintemplate1 > win.in
+sed -n 1p abf_indices >> win.in
+cat $templatehome/wintemplate2 >> win.in
+sed -n 2p abf_indices >> win.in
+cat $templatehome/wintemplate3 >> win.in
+
+# call the win function to generate directories and populate each with the appropriate win.in and conf files
+
+win win.in

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# must provide output name as input
+out=$1
+hole < holey.inp > "$outfull.txt"
+egrep "mid-|sampled" "$outfull.txt" | cut -c 13-36 > "$out.txt" 

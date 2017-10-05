@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# This script will make a tmd-ready pdb by adding the atoms of interest (c-alpha carbons in ordered domains)
+# to a pdb containing all of the other important information so that the tmd will run.
+
+# Functionally, the script goes through the full atom index until all of the tmp.pdb entries have been found.
+
+if [ -z "$1" ]; then
+    echo "Error, please provide input file."
+    exit
+fi
+
+if [ -f "tmdfinal.pdb" ]; then
+  echo "Output file tmdfinal.pdb already exists! Please delete before running program"
+  exit
+fi
+
+alpha_count=$(cat $1 | wc -l)
+count=$(egrep "PROA" protein.pdb | wc -l)
+echo "running from 1 to $count"
+j=1
+index=$(head -1 $1 | cut -c 7-13)
+for i in $(eval echo {1..$((count))});
+do
+  if [ "$i" -eq "$((index))" ]; then
+    sed -n $j\p $1 >> tmdfinal.pdb
+    j=$((j+1))
+    if [ "$j" -eq "$alpha_count" ]; then
+      echo "All alphas have been entered"
+      index=0
+    else
+      index=$(sed -n $j\p $1 | cut -c 7-13) 
+      echo "Now searching for $index"
+    fi
+  else
+    sed -n $((i))\p protein.pdb >> tmdfinal.pdb
+  fi
+done
+echo "Output has been written to file tmdfinal.pdb"

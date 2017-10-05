@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# This program takes a pdb/coor file and psf as argument and generates a pore radius
+# plot 
+
+# help text
+if [[ $1 = "help" ]]; then
+    echo This script, when provided with the psf and pdb/coor files as arguments, generates the protein pdb, hole data and a plot. If you already have a pdb of just the protein, you should use pdbhole.
+    exit 
+fi
+
+# abort if no arguments received
+if [ -z "$1" ]; then
+    echo "No arguments given. Type 'fullhole help' for detailed instructions."
+    exit
+fi
+
+# check if the pdb/coordinate file exists 
+if [ -f $1 ]
+then
+    echo "$1 exists"
+else
+    echo "Hey buddy, $1 doesn't exist"
+    exit
+fi
+
+# if one argument is provided, assume the standard psf file
+if [ -z "$2" ]; then
+#call VMD without a display window and build a pdb from the inputs
+    /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e $tclhome/prot.tcl -dispdev text ../step5_assembly.xplor_ext.psf $1 
+else
+    if [ -f $2 ]
+    then
+        #call VMD without a display window and build a pdb from the inputs
+        /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e $tclhome/prot.tcl -dispdev text $1 $2
+    else
+        echo "Hey buddy, $2 doesn't exist"
+    exit
+    fi
+fi
+#grab the latest file (the newly generated pdb file, and use that name for all 
+#subsequent actions
+name=$(ls -t | head -1 | cut -f 1 -d '.')
+cp $name.pdb ~/pores
+cd ~/pores
+
+# construct a hole input file and generate pore data
+echo "coord $name.pdb      ! co-ordinates in pdb format" > hole.inp
+cat holetemplate >> hole.inp
+hole < hole.inp > "tmp.txt"
+rm hole.inp
+egrep "mid-|sampled" "tmp.txt" | cut -c 13-36 > "$name.txt"
+rm tmp.txt
+
+# move the hole data to a pycharm project, generate and save the plot 
+cp $name.txt ~/PycharmProjects/Work/"pore plots"/
+cd ~/PycharmProjects/Work/"pore plots"/
+python single.py $name.txt
+mv tmp.png $name.png
+mv $name.png "Unbiased Opening"
+cd "Unbiased Opening"
+open $name.png

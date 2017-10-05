@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+    echo "No arguments given, please provide the name of the latest file to be renamed"
+    exit
+fi
+
+name=$1
+sub=$(echo $name | cut -f 1-2 -d '.')
+echo $name
+echo $sub
+#mv $name.xsc 
+
