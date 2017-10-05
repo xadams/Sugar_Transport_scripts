@@ -1,0 +1,8 @@
+#SBATCH -p RM
+#SBATCH -N 1 --tasks-per=node=28
+#SBATCH --mail-type=ALL
+set echo
+set -x
+module load namd
+
+cd $SLURM_SUBMIT_DIR

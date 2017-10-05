@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# this subroutine moves the hole data to a pycharm project, generates and saves the plot 
+cp $1.txt ~/PycharmProjects/Work/"pore plots"/
+cd ~/PycharmProjects/Work/"pore plots"/
+python single.py $1.txt
+mv tmp.png $1.png
+mv $1.png "Unbiased Opening"
+mv $2.txt "Unbiased Opening"
+cd "Unbiased Opening"
+open $1.png

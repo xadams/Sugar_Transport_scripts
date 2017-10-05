@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# This script automatically runs compiled output from c code
+# This should only be used after c code has been successfully
+# compiled and only minor changes are being tested in the output
+
+if [ -z "$1" ]; then
+  echo "No argument given"
+  exit 1
+fi
+
+exe=$(echo $1 | cut -f 1 -d '.')
+gcc $1 -o $exe.exe
+./$exe.exe

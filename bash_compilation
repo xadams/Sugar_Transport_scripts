@@ -1,0 +1,155 @@
+# This whole document is a collection of annoted useful subfunctions
+
+# If the argument is "help", display some description of the program
+if [[ $1 = "help" ]]; then
+    echo This script is used for generating all inputs for an ABF simulation seeded from an SMD simulation. A psf should be provided for indices of the sugar and protein alpha carbons.
+    exit
+fi
+
+# first check that at least 1 argument has been received
+if [ -z "$1" ]; then
+    echo "Error, please provide argument(s)."
+    exit
+fi
+
+# check if a particular file exists in the current directory
+if [ -f $psf ]
+then
+    echo "$psf exists"
+else
+    echo "Hey buddy, $psf doesn't exist"
+    exit
+fi
+
+# The standard way of calling VMD in command line
+# This particular instance calls in text mode to speed up the process and calls a particular function charmm2amber.tcl on opening
+    /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e $tclhome/charmm2amber.tcl -dispdev text ../step5_assembly.xplor_ext.psf $1 -args arg1 arg2
+
+# this line searches based on time of creation, grabs the most recent and takes the base name of the file
+name=$(ls -t | head -1 | cut -f 1 -d '.')
+
+# call sed to delete any line with CRYST in it
+sed /CRYST/d ./$name.pdb > tmp.pdb
+# call sed to replace END by TER
+sed -i -e s/END/TER/g tmp.pdb
+
+# how to write a loop with a variable in the range
+for i in $(eval echo {1..$max});
+do
+    cut -f $i -s -d ' ' $input >> $output
+done
+
+# read only the first character from a variable
+short="${name:0:1}"
+
+# count the number of lines in a file and then append the line number to each line
+count=$(cat $1 | wc -l) 
+
+for i in $(eval echo {0..$((count-1))} );
+do 
+#    read out each line in sequence and pipe it to 
+#    another command that appends the line number
+    j=$(($i+1))
+    sed -n $j\p $1 | sed s/$/" $i"/ >> tmp
+done
+
+# separate a list of modes into triples corresponding to x y z for each particle
+for i in $(eval echo {1..$atomnum});
+do
+   k=$(($i*3-2))
+   j=$(($k+2))
+   cut -f "$k"-"$j" -s -d ' ' $1
+done
+
+# display only the total frames associated with a dcd file whether it is either the first or second argument
+if [[ "$1" == *.dcd ]]; then
+    frames=$(catdcd -num $1 | egrep "Total" | cut -f 3 -s -d ' ')
+    echo "Dcd frames: $frames"
+else
+
+    if [[ "$2" == *.dcd ]]; then
+        frames=$(catdcd -num $2 | egrep "Total" | cut -f 3 -s -d ' ')
+        echo "Dcd frames: $frames"
+    else
+    echo "Need a dcd file"
+    exit
+    fi
+fi
+
+# read in the step count from an xsc file 
+first=$(egrep "0 0 0" $input.xsc | cut -f 1 -s -d ' ')
+
+# automatically generate parts of the .job file by computing the appropriate steps and walltime from the more 
+# user friendly input of the ns run time
+echo -n "Enter run time (in ns): "
+read ns
+if [ $ns="end" ]; then
+    echo -n "Enter the end time (in ns):"
+    read last
+    steps=$(($last-$first))
+fi
+
+if [ -z "$ns" ]; then
+    echo -n "Enter run time (in steps):"
+    read steps
+fi 
+if [ -z "$steps" ]; then
+     steps=$(($ns*500000))
+fi 
+echo -n "Enter your wall time in whole hours (if known): "
+read walltime
+
+if [ -z "$walltime" ]; then
+     walltime=$(($steps*15/1000000))
+fi 
+
+#after a prodction run, transfer over the log, dcd, and most recent coor, vel, etc.
+#only appropriate for bridges file structure
+
+output=$1
+dir=$(pwd | cut -f 5-6 -d '/')
+echo $dir
+destination=/pylon2/ct560hp/adamsa/$dir
+cp $output.coor $destination
+cp $output.vel $destination
+cp $output.xsc $destination
+cp $output.log $destination
+cp $output.dcd $destination
+
+# this set of commands more robustly gets the average run speed of a namd run 
+# reads in all of the timing values and averages them 
+
+egrep "TIMING:" $1 | cut -f 10 -d ' ' | cut -f 1 -d '/' > tmp
+count=$(cat tmp | wc -l)
+steps=$(egrep "TCL: Running" $1 | cut -f 4 -d ' ')
+
+sum=0
+for i in $(eval echo {1..$count});
+do
+    add=$(sed -n $i\p tmp)
+    sum=$(echo "$sum + $add" | bc)
+done
+avg=$(echo "$sum / $count / 3600" | bc -l)
+echo step number is $steps, time/steps is $avg
+rm tmp
+
+# to see how many arguments you have 
+echo $#
+# to loop through all of the arguments
+for arg in "$@"
+do 
+    echo the argument is $arg
+done
+
+# how to treat arguments (e.g. -s to denote particular arguments) specially
+if [[ $arg == "-h" ]]; then
+    echo "Found -h!"
+fi
+
+# the tr tool removes blank spaces from the output
+# the end result is to find all instances of "jackpot" without case sensitivity
+# with an arbitrary number of spaces in between jack and pot
+grep -i "Jack" **/*.txt | tr -d ' ' | grep -i "jackpot"
+
+# this tool strips out any repeats
+unique
