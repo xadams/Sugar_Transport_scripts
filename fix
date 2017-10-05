@@ -7,7 +7,14 @@ fi
 
 name=$1
 sub=$(echo $name | cut -f 1-2 -d '.')
-echo $name
-echo $sub
-#mv $name.xsc 
-
+#echo $name
+#echo $sub
+if [ "$name" == $sub ]; then
+    echo $name and $sub are the same, aborting.
+    exit
+fi
+mv $name.xsc $sub.xsc
+mv $name.coor $sub.coor
+mv $name.vel $sub.vel
+mv $sub.dcd $sub.1.dcd
+catdcd -o $sub.dcd $sub.1.dcd $name.dcd

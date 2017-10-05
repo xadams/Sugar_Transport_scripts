@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-#open -a Terminal.app hello
-#open https://www.google.com 
-sh -N -f -L localhost:5888:localhost:5888 dali.engin.umich.edu
-open http://localhost:5888
-#scp xadams@dali.engin.umich.edu:test ~
