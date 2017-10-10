@@ -13,6 +13,9 @@ for { set i 0 } { $i <= $n } { incr i } {
     animate goto $current 
     set time [expr {$start+$i*1}]
 #    $sel update
+  # center protein before writing each pdb
+    set com [measure center $sel]
+    $sel moveby [vecinvert $com]
     $sel writepdb ${time}ns.pdb
 }
 $sel delete
