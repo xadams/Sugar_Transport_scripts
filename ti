@@ -16,5 +16,6 @@ do
     sum=$(echo "$sum + $add" | bc)
 done
 avg=$(echo "$sum / $count / 3600" | bc -l)
-echo step number is $steps, time/steps is $avg
+ns=$(echo "$avg*500000" | bc -l)
+echo step number is $steps, time/steps is $avg, time per ns is $ns
 rm tmp
