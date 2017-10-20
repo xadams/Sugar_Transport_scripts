@@ -46,7 +46,7 @@ cd ~/pores
 echo "coord $workingd/$name.pdb      ! co-ordinates in pdb format" > hole.inp
 cat holetemplate >> hole.inp
 hole < hole.inp > "tmp.txt"
-rm hole.inp
+#rm hole.inp
 egrep "mid-|sampled" "tmp.txt" | cut -c 13-36 > "$filename.txt"
 rm tmp.txt
 mv $filename.txt $workingd

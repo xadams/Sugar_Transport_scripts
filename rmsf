@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# This script is currently for parsing out the actual rmsd values from the
+# cpptraj output. May extend the capabilities later.
+
+atomnum=475
+
+if [ -z "$1" ]; then
+  echo "No arguments, please provide the fluct file."
+  exit
+fi
+
+grep "000" $1 | head -${atomnum} | cut -c 17-22 > fluct.txt

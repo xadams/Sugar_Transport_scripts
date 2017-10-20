@@ -47,9 +47,9 @@ cd ~/pores
 echo "coord $name.pdb      ! co-ordinates in pdb format" > hole.inp
 cat holetemplate >> hole.inp
 hole < hole.inp > "tmp.txt"
-rm hole.inp
+#rm hole.inp
 egrep "mid-|sampled" "tmp.txt" | cut -c 13-36 > "$name.txt"
-rm tmp.txt
+#rm tmp.txt
 
 # move the hole data to a pycharm project, generate and save the plot 
 cp $name.txt ~/PycharmProjects/Work/"pore plots"/
