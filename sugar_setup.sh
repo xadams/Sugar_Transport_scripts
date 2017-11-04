@@ -1,1 +1,0 @@
-../sugar_setup/sugar_setup.sh

@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# This program takes the pdb and psf files for a transporter and a sugar, and
+# outputs a sugar-protein pdb and a psf that represents the stage directly before the binding
+# of the sugar to the transporter, ready to be analyzed by MD techniques
+
+# plot 
+
+# help text
+if [[ $1 = "help" ]]; then
+    echo This script, when provided with the both a psf and pdb file as arguments, \
+        generates the sugar-protein pdb and psf complex.
+    exit 
+fi
+
+# if no arguments are given, stop the program here instead of crashing in VMD
+filename=$(basename $0)
+if [ -z $1 ]; then
+    echo "No arguments given. Type '$filename help' for detailed instructions."
+    exit
+fi
+
+# if tclhome is not set then cancel the script
+if [ -z $tclhome ]; then
+  echo "tclhome variable is not set. Please set it to the directory containing sugar topology files"
+  exit
+fi
+
+# if output.pdb or output.psf exists then query the user before overwriting
+if [[ -f output.psf || -f output.pdb ]]; then
+  echo "output.psf or output.pdb already exists. Are you sure you want to overwrite? (y/n): "
+  read abort
+  if [ $abort = "y" ]; then
+    echo "By your leave, sire"
+  else
+    echo "Ending program"
+    exit
+  fi
+fi
+
+#pick glucose or xylose, residue is either BGLC or BXYL
+echo -n "Enter sugar (glucose or xylose): "
+read name
+short="${name:0:1}"
+
+# quickly identify whether the sugar to be added is glucose or xylose
+if [ $short = "g" ] ; then
+    sugar_res="BGLC"
+elif [ $short = "G" ] ; then
+    sugar_res="BGLC"
+else
+    sugar_res="BXYL"
+fi
+
+
+# if one argument is provided, assume the standard psf file
+# CHANGE DIRECTORY TO MATCH
+if [ -z "$2" ]; then
+#call VMD without a display window and build a pdb from the inputs
+    /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e \
+    $tclhome/merge_align.tcl -dispdev text ../step5_assembly.xplor_ext.psf \
+    $1 -args $sugar_res $1 ../step5_assembly.xplor_ext.psf $tclhome
+elif [ -f $2 ]
+    then
+        #call VMD without a display window and build a pdb from the inputs
+        /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e \
+        $tclhome/merge_align.tcl -dispdev text $1 $2 -args $sugar_res $1 $2 $tclhome
+else
+    echo "Hey buddy, $2 doesn't exist"
+    exit
+fi
+rm merged.pdb merged.psf
