@@ -1,13 +1,9 @@
-# hopefully this will automate the restructuring 
 mkdir builder
 mv * builder/
 cd builder
-#mv *.vmd ..
 mv namd/ ..
 mv toppar/ ..
-mv step5_assembly.pdb ..
-mv step5_assembly.namd.pdb ..
-mv step5_assembly.xplor_ext.psf ..
-mv step5_assembly.str ..
+mv step5* ..
 mv checkfft.py ..
-cd ..
+cd .. 
+ls
