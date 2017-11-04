@@ -1,7 +1,7 @@
 # this tcl script takes 1 ns snapshots from a longer conf output file
 mol top 0
 set dcd [lindex $argv 0]
-mol addfile $dcd step 200 waitfor all
+mol addfile $dcd waitfor all
 set sel [atomselect top "protein"]
 #puts "Enter a filename: "
 #set name [gets stdin]

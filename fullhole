@@ -56,6 +56,6 @@ cp $name.txt ~/PycharmProjects/Work/"pore plots"/
 cd ~/PycharmProjects/Work/"pore plots"/
 python single.py $name.txt
 mv tmp.png $name.png
-mv $name.png "Unbiased Opening"
-cd "Unbiased Opening"
+#mv $name.png "Unbiased Opening"
+#cd "Unbiased Opening"
 open $name.png
