@@ -1,5 +1,0 @@
-structure          ../step5_assembly.xplor_ext.psf
-coordinates        ../step5_assembly.namd.pdb
-
-set temp           303.15;
-

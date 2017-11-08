@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-cp /pylon2/ct560hp/adamsa/inpfiles/minimization.inp .
-cp /pylon2/ct560hp/adamsa/jobs/minimization.job .

@@ -1,2 +1,0 @@
-anyone who clones this directory should add the tclhome bash variable to reference the folder containing all of their tcl scripts (or the ones included in this repo)
-same with templatehome

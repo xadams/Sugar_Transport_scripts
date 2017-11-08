@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-ls -l *pdb | cut -f 1 -s -d '.' | sed '/pdb/!d' > pdbids.txt
-#cat pdbids.txt | cut -f 1 -s -d '_' > colorids2.txt
-#sed -i -e 's/inoc/green/g' colorids2.txt
-#sed -i -e 's/in/orange/g' colorids2.txt
-#sed -i -e 's/outopen/red/g' colorids2.txt
-#sed -i -e 's/outoc/blue/g' colorids2.txt
-#sed -i -e 's/his/yellow/g' colorids2.txt

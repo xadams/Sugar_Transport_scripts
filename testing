@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-echo -n "First line"
-echo -n "Second line"

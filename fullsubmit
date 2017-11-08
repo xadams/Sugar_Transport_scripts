@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-echo -n "Enter the job name: "
-read name
-
-for a
-do
-    sbatch --depend=singleton --job-name=$name $a 
-done
-#make the same jobname in all of the files submitted in this way

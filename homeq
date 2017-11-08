@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# import the equilibration job from the jobs folder
-cp /pylon2/ct560hp/adamsa/jobs/6* .
-cp /pylon2/ct560hp/adamsa/jobs/gpu_version/7* .
-cp /pylon2/ct560hp/adamsa/inpfiles/hom_equilibration/step* .
