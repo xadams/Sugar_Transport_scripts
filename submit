@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+sbatch $1 > JobID
+cat JobID
+jobID=$(cat JobID | cut -c 21-28)
+sbatch --depend=afterany:$jobID $2
+rm JobID

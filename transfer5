@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#transfer a working set of files to pylon5 for work
+
+if [ -z $1 ]; then
+  echo "Please enter the folder you would like to transfer to pylon5"
+  exit
+fi
+
+echo $dir
+destination=/pylon5/ct560hp/adamsa/
+cp -r $1 $destination

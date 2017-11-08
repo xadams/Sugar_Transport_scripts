@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+filter="ENERGY:"
+
+if [ -z "$1" ]; then
+    echo "No arguments given, please provide the name of the log file to average filter information"
+    exit
+fi
+
+egrep $filter $1 | cut -c 48-60 > tmp
+count=$(cat tmp | wc -l)
+#steps=$(egrep "TCL: Running" $1 | cut -f 4 -d ' ')
+
+#sum=0
+#echo "now to sum up these entries"
+#for i in $(eval echo {5..$((count))});
+#do
+#    add=$(sed -n $i\p tmp)
+#    sum=$(echo "$sum + $add" | bc)
+#done
+#avg=$(echo "$sum / $((count-4))" | bc -l)
+##ns=$(echo "$avg*500000" | bc -l)
+#echo The average dihedral energy is $avg
+##echo step number is $steps, time/steps is $avg, time per ns is $ns
+#rm tmp

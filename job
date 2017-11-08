@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# This program should generate a job script from input
+
+echo -n "Enter the output file name: "
+read name
+echo -n "Enter input file name: "
+read input
+first=$(egrep "0 0 0" $input.xsc | cut -f 1 -s -d ' ')
+#echo -n "Enter first timestep: "
+#read first
+echo -n "Enter run time (in ns): "
+read ns
+if [ $ns="end" ]; then
+    echo -n "Enter the end time (in ns):"
+    read last
+    steps=$(($last-$first))
+fi
+
+if [ -z "$ns" ]; then
+    echo -n "Enter run time (in steps):"
+    read steps
+fi 
+if [ -z "$steps" ]; then
+     steps=$(($ns*500000))
+fi 
+echo -n "Enter your wall time in whole hours (if known): "
+read walltime
+
+if [ -z "$walltime" ]; then
+     walltime=$(($steps*15/1000000))
+fi 
+
+echo "#!/bin/bash" | cat > $name.job
+echo "#SBATCH -t $walltime:00:00" | cat >> $name.job
+cat ~/bin/jobtemplate >> $name.job
+echo "mpirun -np \$SLURM_NPROCS namd2 +setcpuaffinity +pemap 0-27 $name.inp>& $name.log" | cat >> $name.job
+echo "transfer $name" | cat >> $name.job
+
+cat ~/bin/inptemplate1 > $name.inp
+echo "outputname        $name;" | cat >> $name.inp
+echo "set inputname    $input;" | cat >> $name.inp
+echo "firsttimestep   $first;" | cat >> $name.inp
+cat ~/bin/inptemplate2 >> $name.inp
+echo "# run" | cat >> $name.inp
+total=$(($steps+$first))
+echo "numsteps          $total;" | cat >>$name.inp
+echo "run               $steps;" | cat >> $name.inp
+
+echo "Setting walltime as $walltime hours"

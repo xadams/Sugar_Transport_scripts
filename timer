@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# This program should generate a job script from input
+
+echo -n "Enter run time (in ns): "
+read ns
+
+steps=$(($ns*500000))
+walltime=$(($steps*15/1000000)) #  7-8 hours/ns
+gpuwalltime=$(($steps*2/500000)) # 2 hours/ns 
+
+echo "CPU walltime is: $walltime"
+echo "GPU walltime is: $gpuwalltime"
