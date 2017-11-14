@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # This program should generate a job script from input
+# The step size is 1 fs for this version
 
 pdbs=$(ls *.pdb | wc -l)
 if [ "$pdbs" -ne 1 ]; then
@@ -44,13 +45,13 @@ if [ -z "$walltime" ]; then
      walltime=$(($steps*20/1000000))
 fi 
 
-cat $templatehome/template.pbs > $name.pbs
+cat ~/bin/jobs/template.pbs > $name.pbs
 echo "#PBS -l walltime=$walltime:00:00" | cat >> $name.pbs
 echo "#PBS -N $name" >> $name.pbs
-cat $templatehome/template2.pbs >> $name.pbs
+cat ~/bin/jobs/template2.pbs >> $name.pbs
 echo "namd2 +p 12 $name.inp >& $name.log" | cat >> $name.pbs
 
-cat $templatehome/abftemplate > $name.inp
+cat ~/bin/abftemplate > $name.inp
 echo "coordinates       $pdb" | cat >> $name.inp
 echo "set outputname        $name;" | cat >> $name.inp
 echo "set temperature     303.15" | cat >> $name.inp
@@ -59,10 +60,10 @@ echo "firsttimestep   $first;" | cat >> $name.inp
 echo "binCoordinates   $input.coor" | cat >> $name.inp
 echo "#binVelocities    $input.vel" | cat >> $name.inp
 echo "extendedSystem    $input.xsc" | cat >> $name.inp
-cat $templatehome/abftemplate4 >> $name.inp
+cat ~/bin/abftemplate4 >> $name.inp
 echo "colvarsConfig     $in" | cat >> $name.inp
 echo "colvarsInput  $input.colvars.state" | cat >> $name.inp
-cat $templatehome/abftemplate3 >> $name.inp
+cat ~/bin/abftemplate3 >> $name.inp
 
 total=$(($steps+$first))
 echo "numsteps          $total;" | cat >>$name.inp
