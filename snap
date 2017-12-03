@@ -22,7 +22,7 @@ if [ -z "$1" ]; then
 fi
 
 # help text
-if [ $1 = "help" ]; then
+if [[ $1 = "--help" || $1 = "-h" ]]; then
     echo "This script, when provided with the psf and dcd files as arguments, takes 1 ns snapshots of a given trajectory and saves them as pdbs."
     exit
 fi
@@ -51,5 +51,9 @@ else
     fi
 fi
 
-#name=$(ls -t | head -1 | cut -f 1 -d '_')
-#mv $name\_*.pdb ~/XylE/prody_analysis/md_snapshots
+echo -n "Transfer pdbs to md_snapshots? (y/n): "
+read transfer
+if [ $transfer = "y" ]; then
+    name=$(ls -t | head -1 | cut -f 1 -d '_')
+    mv $name*.pdb ~/XylE/prody_analysis/md_snapshots/
+fi

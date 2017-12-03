@@ -153,3 +153,19 @@ grep -i "Jack" **/*.txt | tr -d ' ' | grep -i "jackpot"
 
 # this tool strips out any repeats
 unique
+
+# nested loop
+prefix=( "inoc" "outoc" "unbiased" )
+for p in ${prefix[@]}
+do
+  files=$(ls ${p}*)
+  length=${#p}
+  start=$((length+1))
+  end=$((start+8))
+
+  for f in $files
+  do
+    suffix=$(echo $f | cut -c ${start}-${end})
+    mv $f ${p}_$suffix
+  done
+done

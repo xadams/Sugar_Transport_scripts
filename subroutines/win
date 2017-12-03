@@ -3,6 +3,7 @@
 # the file of the generic "win.in" and it will generate the desired number
 # of directories and add the appropriate win.in files for each
 # This is a subroutine of the full executable abf
+# abf ---> win ---> abf_conf
 
 # help text
 if [[ $1 = "help" ]]; then
@@ -27,12 +28,8 @@ else
 fi
 
 # either get the window number as the second argument or query the user
-if [ -z "$2" ]; then
-    echo -n "Enter the number of windows: "
-    read win
-else
-    win=$2
-fi
+echo -n "Enter the number of windows: "
+read win
 
 echo -n "Enter the start value: "
 read start
@@ -48,9 +45,10 @@ do
     k=$(($j+5))
     sed s/lowerboundary/lowerboundary\ \ \ $j/g $1 > win$i.in
     sed -i.bak s/upperboundary/upperboundary\ \ \ $k/g win$i.in
-    #mkdir win$i
-    ./abf_conf $i $xsc
+    mkdir win$i
+    $subhome/abf_conf $i $2 $xsc
     mv win$i.in win$i/
     mv win$i.conf win$i/
+    mv win$i.pdb win$i/
 done
 rm *.bak

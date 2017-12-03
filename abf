@@ -20,7 +20,7 @@ else
     psf=$1
 fi
 
-# check if the win.in file exists 
+# check if the psf file exists 
 if [ -f $psf ]
 then
     echo "$psf exists"
@@ -30,7 +30,9 @@ else
 fi
 
 # load VMD with the provided psf and write out the appropriate indices as "abf_indices"
-#/Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e $tclhome/abf_indices.tcl -dispdev text $psf
+if [[ ! -f abf_indices ]]; then
+  /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e $tclhome/abf_indices.tcl -dispdev text $psf
+fi
 
 # generate the generic win.in file to which limits for each window will be added
 cat $templatehome/wintemplate1 > win.in
@@ -41,4 +43,4 @@ cat $templatehome/wintemplate3 >> win.in
 
 # call the win function to generate directories and populate each with the appropriate win.in and conf files
 
-win win.in
+$subhome/win win.in $psf

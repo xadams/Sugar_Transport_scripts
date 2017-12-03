@@ -3,7 +3,7 @@
 #############################################################
 
 # Minimization
-minimize          500
+minimize         1000
 reinitvels      $temperature
 
-run 1000000 ;#
+run      4999000 ;# first 5 ns of simulation

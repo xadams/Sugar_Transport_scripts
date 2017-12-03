@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 
-echo -n "First line"
-echo -n "Second line"
+if [ ${1: -4} == ".pdb" ]; then
+  echo is a pdb file
+else
+  echo is not a pdb file
+fi
+

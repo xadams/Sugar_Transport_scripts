@@ -46,7 +46,7 @@ pairlistdist        13.5
 
 
 # Integrator Parameters
-timestep            2.0  ;# 2fs/step (only if needed to finish quickly)
+timestep            1.0  ;# 1fs/step (try 2fs only if you need to finish quickly)
 rigidBonds          all  ;# needed for 2fs steps
 nonbondedFreq       1
 fullElectFrequency  1
@@ -88,7 +88,7 @@ langevinPistonTemp    $temperature
 # Output
 outputName          $outputname
 
-restartfreq         5000     ;# 1000steps = every 1ps
+restartfreq         1000     ;# 1000steps = every 1ps
 dcdfreq             2500
 xstFreq             1500
 outputEnergies      1000
