@@ -72,8 +72,8 @@ echo "#!/bin/bash" | cat > $name.job
 echo "#SBATCH --job-name=${pre}_${name}" | cat >> $name.job
 echo "#SBATCH -t $walltime:00:00" | cat >> $name.job
 cat ~/bin/gputemplate >> $name.job
-echo "/home/jphillip/NAMD_2.12b1_Linux-x86_64-multicore-CUDA/namd2 +idlepoll +p \$SLURM_NPROCS +pemap 0-13+14 $name.inp>& $name.log" | cat >> $name.job
-#echo "/home/jphillip/NAMD_binaries/NAMD_LATEST_Linux-x86_64-multicore-Bridges-CUDA/namd2 +idlepoll +p \$SLURM_NPROCS +pemap 0-13+14 $name.inp>& $name.log" | cat >> $name.job
+#echo "/home/jphillip/NAMD_2.12b1_Linux-x86_64-multicore-CUDA/namd2 +idlepoll +p \$SLURM_NPROCS +pemap 0-13+14 $name.inp>& $name.log" | cat >> $name.job
+echo "/home/jphillip/NAMD_binaries/NAMD_LATEST_Linux-x86_64-multicore-Bridges-CUDA/namd2 +idlepoll +p \$SLURM_NPROCS +pemap 0-13+14 $name.inp>& $name.log" | cat >> $name.job
 echo "transfer $name" | cat >> $name.job
 
 cat ~/bin/inptemplate1 > $name.inp

@@ -4,7 +4,7 @@
 output=$1
 dir=$(pwd | cut -f 5-6 -d '/')
 echo $dir
-destination=/pylon2/ct560hp/adamsa/$dir
+destination=/pylon2/mc562gp/adamsa/$dir
 cp $output.coor $destination
 cp $output.vel $destination
 cp $output.xsc $destination

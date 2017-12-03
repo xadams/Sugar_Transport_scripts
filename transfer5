@@ -7,5 +7,5 @@ if [ -z $1 ]; then
 fi
 
 echo $dir
-destination=/pylon5/ct560hp/adamsa/
+destination=/pylon5/mc562gp/adamsa/
 cp -r $1 $destination

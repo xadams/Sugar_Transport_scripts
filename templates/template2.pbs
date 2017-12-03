@@ -1,0 +1,17 @@
+####  End PBS preamble
+####  Commands follow this line
+
+# This script requires no modules loaded
+
+# print this file listing the computers that were used
+if [ -e "$PBS_NODEFILE" ] ; then
+    echo "Running on"
+    uniq -c $PBS_NODEFILE
+fi
+
+# changes to the directory that the program is run from, and prints it out
+if [ -d "$PBS_O_WORKDIR" ] ; then
+    cd $PBS_O_WORKDIR
+fi
+echo "Running from $(pwd)"
+

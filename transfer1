@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#transfer a working set of files to pylon5 for work
+
+if [ -z $1 ]; then
+  echo "Please enter the file you would like to transfer to pylon2"
+  exit
+fi
+
+dir=$(pwd | cut -f 5-6 -d '/')
+echo $dir
+destination=/pylon2/mc562gp/adamsa/$dir
+cp $1 $destination
