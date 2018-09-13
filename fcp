@@ -1,0 +1,10 @@
+#!/bin/bash
+# bcp: Flux CoPy
+
+if [ -z "$1" ]; then
+    echo "Error, please provide argument(s)."
+    exit
+fi
+
+scp flux-xfer:$1 .
+

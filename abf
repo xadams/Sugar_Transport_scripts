@@ -31,7 +31,7 @@ fi
 
 # load VMD with the provided psf and write out the appropriate indices as "abf_indices"
 if [[ ! -f abf_indices ]]; then
-  /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e $tclhome/abf_indices.tcl -dispdev text $psf
+  /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/vmd -e $tclhome/abf_indices.tcl -dispdev text $psf
 fi
 
 # generate the generic win.in file to which limits for each window will be added

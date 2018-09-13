@@ -14,7 +14,8 @@ for { set i 0 } { $i <= $n } { incr i } {
     set time [expr {$start+$i*5}]
     # center protein before writing each pdb
     set com [measure center $sel]
-    $sel moveby [vecinvert $com]
+    set vector [vecinvert $com]
+    $sel moveby $vector
     $sel writepdb ${time}ns.pdb
 }
 $sel delete

@@ -36,19 +36,20 @@ read start
 
 echo -n "Enter the extended system input: "
 read xsc
+interval=4
 
-end=$(($start+5*$win))
+end=$(($start+$interval*$win))
 
 for i in $(eval echo {1..$win} );
 do
-    j=$((($i-1)*5+$start))
-    k=$(($j+5))
+    j=$((($i-1)*$interval+$start))
+    k=$(($j+$interval))
     sed s/lowerboundary/lowerboundary\ \ \ $j/g $1 > win$i.in
     sed -i.bak s/upperboundary/upperboundary\ \ \ $k/g win$i.in
     mkdir win$i
-    $subhome/abf_conf $i $2 $xsc
+    $subhome/abf_inp $i $2 $xsc
     mv win$i.in win$i/
-    mv win$i.conf win$i/
-    mv win$i.pdb win$i/
+    mv win$i.inp win$i/
+    cp win$i.pdb win$i/
 done
 rm *.bak

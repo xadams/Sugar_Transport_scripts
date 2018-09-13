@@ -56,13 +56,13 @@ fi
 # CHANGE DIRECTORY TO MATCH
 if [ -z "$2" ]; then
 #call VMD without a display window and build a pdb from the inputs
-    /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e \
+    /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/vmd -e \
     $tclhome/merge_align.tcl -dispdev text ../step5_assembly.xplor_ext.psf \
     $1 -args $sugar_res $1 ../step5_assembly.xplor_ext.psf $tclhome
 elif [ -f $2 ]
     then
         #call VMD without a display window and build a pdb from the inputs
-        /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e \
+        /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/vmd -e \
         $tclhome/merge_align.tcl -dispdev text $1 $2 -args $sugar_res $1 $2 $tclhome
 else
     echo "Hey buddy, $2 doesn't exist"

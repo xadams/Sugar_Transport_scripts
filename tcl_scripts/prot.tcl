@@ -1,9 +1,8 @@
 mol top 0
 set prot [atomselect top "protein"]
-puts "Enter a filename:"
-set name [gets stdin]
+set name [lindex $argv 0]
 set com [measure center $prot]
 $prot moveby [vecinvert $com]
-$prot writepdb $name.pdb 
+$prot writepdb pore.pdb 
 $prot delete
 exit

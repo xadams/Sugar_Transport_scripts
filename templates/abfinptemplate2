@@ -42,7 +42,7 @@ exclude             scaled1-4
 cutoff              12.
 switching           on
 switchdist          10.
-pairlistdist        13.5
+pairlistdist        14.0
 
 
 # Integrator Parameters
@@ -93,6 +93,7 @@ dcdfreq             2500
 xstFreq             1500
 outputEnergies      1000
 outputPressure      1000
+outputTiming        1500
 
 
 #############################################################

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+for ((i=5010; i<=7500; i+=10 )); do
+    sed /"  $i  "/d ./sugar-forward-shift-halfstep.5000.fepout > tmp.fepout
+    mv tmp.fepout sugar-forward-shift-halfstep.5000.fepout
+#    search=$(sed -n $i\p tmp | cut -c 1-18)
+#    echo "Searching for $search"
+#    index=$(egrep "$search" ../step5_assembly.pdb | cut -c 1-13)
+#    echo "Writing $index to tmp.bak"
+#    sed -n $i\p tmp | sed s/^/"$index"/  >> tmp.bak
+done

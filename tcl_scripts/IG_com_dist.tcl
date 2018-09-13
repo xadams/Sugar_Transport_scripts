@@ -1,0 +1,5 @@
+set IG1 [atomselect top "alpha and resid 75 to 80 148 to 154 160 to 166"]
+set IG2 [atomselect top "alpha and resid 332 to 337 391 to 397 404 to 410"]
+set IG1_com [measure center $IG1 weight mass]
+set IG2_com [measure center $IG2 weight mass]
+veclength [vecsub $IG2_com $IG1_com]

@@ -39,18 +39,22 @@ fi
 
 #take the file name from arguments for subsequent actions
 name=$(echo $1 | cut -f 1 -s -d ".")
-workingd=$(pwd)
+workingd=$(pwd | cut -f 4-10 -d "/")
 cd ~/pores
 
 # construct a hole input file and generate pore data
-echo "coord $workingd/$name.pdb      ! co-ordinates in pdb format" > hole.inp
+echo "coord ~/$workingd/${name}.pdb      ! co-ordinates in pdb format" > hole.inp
 cat holetemplate >> hole.inp
 hole < hole.inp > "tmp.txt"
 #rm hole.inp
 egrep "mid-|sampled" "tmp.txt" | cut -c 13-36 > "$filename.txt"
 #rm tmp.txt
-mv $filename.txt $workingd
-cd $workingd
 
 # move the hole data to a pycharm project, generate and save the plot 
-$subhome/pore_plot $filename $file
+cp $filename.txt ~/PycharmProjects/Work/"pore plots"/
+cd ~/PycharmProjects/Work/"pore plots"/
+python single.py $filename.txt
+mv tmp.png $filename.png
+#mv $name.png "Unbiased Opening"
+#cd "Unbiased Opening"
+open $filename.png

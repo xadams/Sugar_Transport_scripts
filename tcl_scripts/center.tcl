@@ -1,0 +1,5 @@
+set sug [atomselect top "not protein"]
+set prot [atomselect top "protein"]
+set sug_com [measure center $sug]
+set prot_com [measure center $prot]
+$sug moveby [vecsub $prot_com $sug_com]

@@ -4,7 +4,6 @@ mv * builder/
 cd builder
 #mv *.vmd ..
 mv namd/ ..
-mv toppar/ ..
 mv step5_assembly.pdb ..
 mv step5_assembly.namd.pdb ..
 mv step5_assembly.xplor_ext.psf ..

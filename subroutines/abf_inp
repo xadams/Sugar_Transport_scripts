@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# This portion of the abf script generates the conf file for the initial 2 ns of the abf simulation
+# This portion of the abf script generates the inp file for the initial 2 ns of the abf simulation
 # Please see abf for the start of the process 
-# abf ---> win ---> abf_conf
+# abf ---> win ---> abf_inp
 
-out=win$1.conf
+out=win$1.inp
 
-cat $templatehome/abfconftemplate1 > $out
+cat $templatehome/abfinptemplate1 > $out
 echo "structure        ../$2" >> $out
 echo "coordinates      win$1.pdb" >> $out
 echo "set outputname        win$1" >> $out
@@ -14,6 +14,6 @@ if [ ${3: -4} == ".xsc" ]; then
 else
   echo "extendedSystem ../$3.xsc" >> $out
 fi
-cat $templatehome/abfconftemplate2 >> $out
+cat $templatehome/abfinptemplate2 >> $out
 echo "colvarsConfig     win$1.in" >> $out
-cat $templatehome/abfconftemplate3 >> $out
+cat $templatehome/abfinptemplate3 >> $out

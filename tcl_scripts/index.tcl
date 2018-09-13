@@ -1,3 +1,4 @@
+#Print out the indices for a user specified continuous group of residues
 mol top 0
 puts "Enter the first resid:"
 set first [gets stdin]

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# This script takes 1 ns snapshots of a given trajectory
+
+# first check that at least 1 argument has been received
+if [ -z "$1" ]; then
+    echo "Please provide 2 pdb inputs. This is a stripped down version of merge"
+    exit
+fi
+
+# help text
+if [[ $1 = "--help" || $1 = "-h" ]]; then
+    echo "TODO"
+    exit
+fi
+
+# check if the pdb/coordinate file exists 
+if [ -f $1 ]
+then
+    echo "$1 exists"
+else
+    echo "Hey buddy, $1 doesn't exist"
+    exit
+fi
+
+# if one argument is provided, assume the standard psf file
+#call VMD without a display window and build a pdb from the inputs
+/Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/vmd -e $tclhome/merge_pdb.tcl -dispdev text -args $1 $2

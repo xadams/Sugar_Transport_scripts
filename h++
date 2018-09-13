@@ -25,12 +25,12 @@ fi
 # if one argument is provided, assume the standard psf file
 if [ -z "$2" ]; then
 #call VMD without a display window and build a pdb from the inputs
-    /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e $tclhome/charmm2amber.tcl -dispdev text ../step5_assembly.xplor_ext.psf $1
+    /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/vmd -e $tclhome/charmm2amber.tcl -dispdev text ../step5_assembly.xplor_ext.psf $1
 else
     if [ -f $2 ]
     then
 #call VMD without a display window and build a pdb from the inputs
-        /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/VMD -e $tclhome/charmm2amber.tcl -dispdev text $1 $2
+        /Applications/VMD\ 1.9.3.app/Contents/Resources/VMD.app/Contents/MacOS/vmd -e $tclhome/charmm2amber.tcl -dispdev text $1 $2
     else
         echo "Hey buddy, $2 doesn't exist"
     exit

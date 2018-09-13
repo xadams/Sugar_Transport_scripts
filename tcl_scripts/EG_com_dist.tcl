@@ -1,0 +1,5 @@
+set EG1 [atomselect top "alpha and resid 28 to 34 58 to 63 178 to 183"]
+set EG2 [atomselect top "alpha and resid 295 to 301 315 to 320 423 to 428"]
+set EG1_com [measure center $EG1 weight mass]
+set EG2_com [measure center $EG2 weight mass]
+veclength [vecsub $EG2_com $EG1_com]

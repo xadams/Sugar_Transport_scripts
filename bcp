@@ -1,0 +1,10 @@
+#!/bin/bash
+# bcp: Bridges CoPy
+
+if [ -z "$1" ]; then
+    echo "Error, please provide argument(s)."
+    exit
+fi
+
+scp bridges:$1 .
+
