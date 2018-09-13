@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#transfer files to cpu glotzer allocation
+
+destination=/scratch/sglotzer_fluxoe/xadams/
+cp -r $1 $destination

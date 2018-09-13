@@ -1,0 +1,5 @@
+cp alchemy_eq.inp alchemy_prod.inp
+cp alchemy_eq.pbs alchemy_prod.pbs
+sed -i -e s/_eq/_prod/g alchemy_prod.inp
+sed -i -e s/_eq/_prod/g alchemy_prod.pbs
+sed -i -e /alchEquilSteps/d alchemy_prod.inp

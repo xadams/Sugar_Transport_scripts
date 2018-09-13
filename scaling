@@ -18,15 +18,15 @@ else
     exit
 fi
 
-cat $templatehome/scaling1.pbs > $name.$cores.pbs
+cat ~/bin/scaling1.pbs > $name.$cores.pbs
 echo "#PBS -l nodes=1:ppn=$cores,pmem=1gb" | cat >> $name.$cores.pbs
-cat $templatehome/scaling2.pbs >> $name.$cores.pbs
+cat ~/bin/scaling2.pbs >> $name.$cores.pbs
 #echo "cl" | cat >> namd$cores.pbs
 echo "namd2 +p $cores $name.inp > $name.$cores.log" | cat >> $name.$cores.pbs
 
-cat $templatehome/inptemplate1 > $name.inp
+cat ~/bin/inptemplate1 > $name.inp
 echo "outputname       $name;" | cat >> $name.inp
 echo "set inputname    $input;" | cat >> $name.inp
 echo "firsttimestep   $first;" | cat >> $name.inp
-cat $templatehome/inptemplate2 >> $name.inp
+cat ~/bin/inptemplate2 >> $name.inp
 echo "run        10000;" | cat >> $name.inp

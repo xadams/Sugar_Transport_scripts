@@ -3,9 +3,9 @@
 echo -n "Enter the number of cores to test: "
 read cores
 
-cat $templatehome/scaling1.pbs > namd$cores.pbs
+cat ~/bin/scaling1.pbs > namd$cores.pbs
 echo "#PBS -l nodes=1:ppn=$cores,pmem=1gb" | cat >> namd$cores.pbs
-cat $templatehome/scaling2.pbs >> namd$cores.pbs
+cat ~/bin/scaling2.pbs >> namd$cores.pbs
 #echo "cl" | cat >> namd$cores.pbs
 echo "namd +p $cores minimizationscaling.inp > minimizationscaling.$cores.log" | cat >> namd$cores.pbs
 qsub -N namd$cores namd$cores.pbs

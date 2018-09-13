@@ -7,8 +7,8 @@ read name
 echo -n "Enter your wall time in whole hours: "
 read walltime
 
-cat $templatehome/template.pbs > $name.pbs
+cat ~/bin/jobs/template.pbs > $name.pbs
 echo "#PBS -l walltime=$walltime:00:00" | cat >> $name.pbs
 echo "#PBS -N $name" >> $name.pbs
-cat $templatehome/template2.pbs >> $name.pbs
+cat ~/bin/jobs/template2.pbs >> $name.pbs
 echo "namd2 +p 12 $name.log >& $name.log" | cat >> $name.pbs

@@ -1,0 +1,26 @@
+# 15 seconds 15:00:00 hours 15:00:00:00 days, 15:00 is minimum amount you should ask for
+#PBS -l walltime=30:00
+#PBS -V
+
+# account name
+#PBS -A hbmayes_fluxod
+# should match suffix 
+#PBS -q fluxod
+
+####  End PBS preamble
+####  Commands follow this line
+
+# This script requires no modules loaded
+
+# print this file listing the computers that were used
+if [ -e "$PBS_NODEFILE" ] ; then
+    echo "Running on"
+    uniq -c $PBS_NODEFILE
+fi
+
+# changes to the directory that the program is run from, and prints it out
+if [ -d "$PBS_O_WORKDIR" ] ; then
+    cd $PBS_O_WORKDIR
+fi
+echo "Running from $(pwd)"
+
